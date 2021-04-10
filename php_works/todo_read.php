@@ -15,6 +15,21 @@ try {
   exit();
 }
 
+ // 参照はSELECT文!
+$sql = 'SELECT * FROM works';
+$stmt = $pdo->prepare($sql); 
+$status = $stmt->execute();
+
+if ($status==false) {
+  $error = $stmt->errorInfo(); exit('sqlError:'.$error[2]);
+  // 失敗時􏰂エラー出力
+   
+   } else {
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC); $output = "";
+  foreach ($result as $record) {
+  $output .= "<tr>";
+  $output .= "<td>{$record["date"]}</td>"; $output .= "<td>{$record["start_time"]}</td>"; $output.= "<td>{$record["end_time"]}</td>"; $output.= "<td>{$record["break_time"]}</td>"; $output.= "<td>{$record["comment"]}</td>"; $output .= "</tr>";
+  } }
 
 ?>
 
@@ -29,13 +44,16 @@ try {
 
 <body>
   <fieldset>
-    <legend>DB連携型todoリスト（一覧画面）</legend>
+    <legend>勤怠管理リスト（一覧画面）</legend>
     <a href="todo_input.php">入力画面</a>
     <table>
       <thead>
         <tr>
-          <th>deadline</th>
-          <th>todo</th>
+          <th>日にち</th>
+          <th>始業時刻</th>
+          <th>終業時刻</th>
+          <th>休憩</th>
+          <th>コメント</th>
         </tr>
       </thead>
       <tbody>
